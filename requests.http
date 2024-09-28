@@ -1,0 +1,12 @@
+### LISTAR TODOS OS ALUNOS
+GET http://localhost:3000/api/students
+Content-Type: application/json
+
+### CADASTRAR UM NOVO ALUNO
+POST http://localhost:3000/api/students
+Content-Type: application/json
+
+{
+  "name": "Herlon",
+  "email": "herlon@email.com"
+}
