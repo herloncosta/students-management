@@ -1,0 +1,31 @@
+### LISTAR TODOS OS ALUNOS
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+### LISTAR ALUNO POR ID
+GET http://localhost:3000/api/users/449d276c-d96e-4ce5-9d32-0c059a1153db
+Content-Type: application/json
+
+### CADASTRAR UM NOVO ALUNO
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "Cintia",
+  "password": "cintiasantos",
+  "email": "cintiasantos@email.com"
+}
+
+### ATUALIZAR UM NOVO ALUNO
+PUT http://localhost:3000/api/users/449d276c-d96e-4ce5-9d32-0c059a1153db
+Content-Type: application/json
+
+{
+  "username": "Mariano",
+  "password": "marianosilva",
+  "email": "marianosilva@gmail.com"
+}
+
+### REMOVER UM ALUNO
+DELETE http://localhost:3000/api/users/449d276c-d96e-4ce5-9d32-0c059a1153db
+Content-Type: application/json

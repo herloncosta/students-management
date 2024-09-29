@@ -75,7 +75,6 @@ export const deleteStudent = async (req, res) => {
 		if (err.code === "P2025") {
 			return res.status(404).json({ error: "Student not found" });
 		}
-		console.error("Error deleting student:", err);
 		res.status(500).json({ error: "Failed to delete student" });
 	}
 };

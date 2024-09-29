@@ -1,12 +1,12 @@
 import express from "express";
-import studentRoutes from "./src/routes/student-routes.js";
-import teacherRoutes from "./src/routes/teacher-routes.js";
+import studentRoutes from "./src/student/routes.js";
+import userRoutes from "./src/user/routes.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/api/students", studentRoutes);
-app.use("/api/teachers", teacherRoutes);
+app.use("/api/users", userRoutes);
 
 export default app;
