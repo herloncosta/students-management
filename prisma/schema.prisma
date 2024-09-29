@@ -7,8 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Students {
-  id    Int    @id @default(autoincrement())
-  name  String @db.VarChar(100)
-  email String @db.VarChar(100)
+model Student {
+  id         String   @id @default(uuid())
+  name       String
+  surname    String
+  email      String   @unique
+  age        Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String @unique() @db.VarChar(100)
+  password String @db.VarChar(100)
+  email    String @unique() @db.VarChar(100)
 }
