@@ -3,7 +3,7 @@ GET http://localhost:3000/api/students
 Content-Type: application/json
 
 ### LISTAR ALUNO POR ID
-GET http://localhost:3000/api/students/9
+GET http://localhost:3000/api/students/84e55958-edec-4867-8a80-85efb975c9a7
 Content-Type: application/json
 
 ### CADASTRAR UM NOVO ALUNO
@@ -11,21 +11,20 @@ POST http://localhost:3000/api/students
 Content-Type: application/json
 
 {
-  "name": "Cintia",
-  "surname": "Santos",
-  "email": "cintiasantos@email.com",
-  "age": 29
+  "name": "Herlon",
+  "surname": "Costa",
+  "email": "herloncosta@email.com",
+  "age": 28
 }
 
 ### ATUALIZAR UM NOVO ALUNO
-PUT http://localhost:3000/api/students/1bc303b2-0d01-456d-b776-301e7c724a97
+PUT http://localhost:3000/api/students/84e55958-edec-4867-8a80-85efb975c9a7
 Content-Type: application/json
 
 {
-  "name": "Mariano",
-  "email": "marianosilva@gmail.com"
+  "surname": "Costa"
 }
 
 ### REMOVER UM ALUNO
-DELETE http://localhost:3000/api/students/1bc303b2-0d01-456d-b776-301e7c724a97
+DELETE http://localhost:3000/api/students/b0736ad8-f9ee-4ad3-a9af-c27dc17c5e4f
 Content-Type: application/json

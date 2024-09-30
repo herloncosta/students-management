@@ -1,80 +1,144 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import Joi from "joi";
 
-export const getStudents = async (req, res) => {
+import { HttpStatusCode } from "../../utils/http-status-codes.js";
+import {
+	createStudent,
+	deleteStudent,
+	getStudentById,
+	getStudents,
+	updateStudent,
+} from "./service.js";
+
+export const index = async (req, res) => {
 	try {
-		const students = await prisma.student.findMany();
-		res.json(students);
+		const students = await getStudents();
+		res.status(HttpStatusCode.OK.code).json(students);
 	} catch (err) {
-		res.status(500).json({ error: "Failed to fetch students" });
+		res
+			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
+			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message });
 	}
 };
 
-export const getStudentById = async (req, res) => {
+const showSchema = Joi.object().keys({
+	id: Joi.string().required(),
+});
+
+export const show = async (req, res) => {
 	try {
-		const id = Number(req.params.id);
-		const student = await prisma.student.findUnique({ where: { id } });
+		const { error, value } = showSchema.validate(req.params);
+		if (error) {
+			return res
+				.status(HttpStatusCode.BAD_REQUEST.code)
+				.json({ error: error.details[0].message });
+		}
+
+		const student = await getStudentById(value.id);
+
 		if (!student) {
-			return res.status(404).json({ error: "Student not found" });
+			return res
+				.status(HttpStatusCode.NOT_FOUND.code)
+				.json({ error: HttpStatusCode.NOT_FOUND.message });
 		}
+
 		res.json(student);
-	} catch (err) {
-		res.status(404).json({ error: "Student not found" });
+	} catch (e) {
+		res
+			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
+			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message });
 	}
 };
 
-export const createStudent = async (req, res) => {
+const createSchema = Joi.object().keys({
+	name: Joi.string().required(),
+	surname: Joi.string().required(),
+	email: Joi.string().email().required(),
+	age: Joi.number().integer().min(18).max(100).required(),
+});
+
+export const create = async (req, res) => {
 	try {
-		const { name, surname, email, age } = req.body;
-		if (!name || !surname || !email || !age) {
-			return res.status(400).json({ error: "Name and email are required" });
+		const { error, value } = createSchema.validate(req.body);
+
+		if (error) {
+			return res
+				.status(HttpStatusCode.BAD_REQUEST.code)
+				.json({ error: error.details[0].message });
 		}
-		const student = await prisma.student.create({
-			data: { name, surname, email, age },
-		});
+
+		const student = await createStudent(value);
+
+		if (!student) {
+			return res
+				.status(HttpStatusCode.BAD_REQUEST.code)
+				.json({ error: error.details[0].message });
+		}
+
 		res.json(student);
 	} catch (err) {
-		if (err.code === "P2002") {
-			return res
-				.status(400)
-				.json({ error: "A student with the same email already exists" });
-		}
-		res.status(500).json({ error: "Failed to create student" });
+		console.log(err);
+		res
+			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
+			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message });
 	}
 };
 
-export const updateStudent = async (req, res) => {
+const updateSchema = Joi.object().keys({
+	id: Joi.string().required(),
+	name: Joi.string(),
+	surname: Joi.string(),
+	email: Joi.string().email(),
+	age: Joi.number().integer().min(18).max(100),
+});
+
+export const update = async (req, res) => {
 	try {
-		const { name, surname, email, age } = req.body;
-		if (!name && !surname && !email && !age) {
-			return res
-				.status(400)
-				.json({ error: "At least one field must be updated" });
-		}
-		const updatedStudent = await prisma.student.update({
-			where: { id: req.params.id },
-			data: { name, surname, email, age },
+		const { error, value } = updateSchema.validate({
+			...req.params,
+			...req.body,
 		});
+
+		if (error) {
+			return res
+				.status(HttpStatusCode.BAD_REQUEST.code)
+				.json({ error: error.details[0].message });
+		}
+
+		const updatedStudent = await updateStudent(value);
+
+		if (!updatedStudent) {
+			return res
+				.status(HttpStatusCode.NOT_FOUND.code)
+				.json({ error: HttpStatusCode.NOT_FOUND.message });
+		}
+
 		res.json(updatedStudent);
 	} catch (err) {
 		console.log(err);
-		if (err.code === "P2025") {
-			return res.status(400).json({ error: "Student not found" });
-		}
-		res.status(500).json({ error: "Failed to update student" });
+		res
+			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
+			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message });
 	}
 };
 
-export const deleteStudent = async (req, res) => {
+const destroySchema = Joi.object().keys({
+	id: Joi.string().required(),
+});
+
+export const destroy = async (req, res) => {
 	try {
-		await prisma.student.delete({
-			where: { id: req.params.id },
-		});
-		res.json({ message: "Student deleted successfully" });
-	} catch (err) {
-		if (err.code === "P2025") {
-			return res.status(404).json({ error: "Student not found" });
+		const { error, value } = destroySchema.validate(req.params);
+		if (error) {
+			return res
+				.status(HttpStatusCode.BAD_REQUEST.code)
+				.json({ error: error.details[0].message });
 		}
-		res.status(500).json({ error: "Failed to delete student" });
+
+		await deleteStudent(value);
+		res.status(HttpStatusCode.NO_CONTENT.code).json({});
+	} catch (err) {
+		res
+			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
+			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message });
 	}
 };
