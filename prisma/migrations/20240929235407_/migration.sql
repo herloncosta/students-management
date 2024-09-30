@@ -1,27 +1,24 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Students` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Students";
-
 -- CreateTable
 CREATE TABLE "Student" (
-    "id" SERIAL NOT NULL,
-    "name" VARCHAR(100) NOT NULL,
-    "email" VARCHAR(100) NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "surname" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "age" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "username" VARCHAR(100) NOT NULL,
     "password" VARCHAR(100) NOT NULL,
     "email" VARCHAR(100) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

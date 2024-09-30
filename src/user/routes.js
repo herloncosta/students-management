@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { destroy, index, show, store, update } from "./controller.js";
+import { authenticate, login } from "../middlewares/auth.js";
+import { destroy, store, update } from "./controller.js";
 
 const userRoutes = Router();
 
-userRoutes.get("/", index);
-userRoutes.get("/:id", show);
 userRoutes.post("/", store);
-userRoutes.put("/:id", update);
-userRoutes.delete("/:id", destroy);
+userRoutes.put("/", authenticate, update);
+userRoutes.delete("/", authenticate, destroy);
+userRoutes.post("/auth/login", login);
 
 export default userRoutes;

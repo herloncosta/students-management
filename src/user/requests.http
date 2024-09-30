@@ -1,31 +1,37 @@
-### LISTAR TODOS OS USUÁRIOS
-GET http://localhost:3000/api/users
-Content-Type: application/json
-
-### LISTAR USUÁRIOS POR ID
-GET http://localhost:3000/api/users/736bad39-27ee-45d5-b576-8d1213d3f5d1
-Content-Type: application/json
+### VARIÁVEIS
+@apiurl = http://localhost:3000/api/users
 
 ### CADASTRAR UM NOVO USUÁRIO
-POST http://localhost:3000/api/users
+POST {{apiurl}}
 Content-Type: application/json
 
 {
-  "username": "Herlon",
-  "password": "herloncosta",
-  "email": "herloncosta@email.com"
+  "username": "Diego Santos",
+  "password": "diegocosta",
+  "email": "diegosantos@email.com"
 }
 
 ### ATUALIZAR UM NOVO USUÁRIO
-PUT http://localhost:3000/api/users/fcbe0568-2000-4ead-83ee-e5c9dfbc9e6c
+PUT {{apiurl}}
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNiYWE5ZjQxLTg1ODEtNGNhZS1hOGFjLTEwNmEwYjUyMDljNCIsInVzZXJuYW1lIjoiRGllZ28gU2FudG9zIiwiZW1haWwiOiJkaWVnb3NhbnRvc0BlbWFpbC5jb20iLCJpYXQiOjE3Mjc2NTk5NDAsImV4cCI6MTcyNzY2MzU0MH0.u5FnrH_ryHDpsWYKnukIkwY4r2ksBnBLnEK_u9qF0fM
 
 {
-  "username": "Herlon Costa",
-  "password": "herloncosta",
-  "email": "herloncosta@gmail.com"
+  "username": "Diego Costa",
+  "password": "diegosantos",
+  "email": "diegosantos@email.com"
 }
 
 ### REMOVER UM USUÁRIOS
-DELETE http://localhost:3000/api/users/fcbe0568-2000-4ead-83ee-e5c9dfbc9e6c
+DELETE {{apiurl}}
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzYjI4OTU5LTFjYjktNDcyOS04OWYzLTUzYmNkYjY0MzhlZCIsInVzZXJuYW1lIjoiRGllZ28gU2FudG9zIiwiZW1haWwiOiJkaWVnb3NhbnRvc0BlbWFpbC5jb20iLCJpYXQiOjE3Mjc2NjA0NDksImV4cCI6MTcyNzY2NDA0OX0.plJFzdNKtO0JCiE9RwLpzSn5yueNpSjw1TAlslonYEI
+
+### LOGIN
+POST {{apiurl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "diegosantos@email.com",
+  "password": "diegocosta"
+}
