@@ -2,15 +2,15 @@ import { hashPassword, isValidEmail } from '../../utils/index.js'
 import { create, findByEmail, remove, save } from './repository.js'
 
 export const createUser = async (user) => {
-	if (!user.username || !user.password || !user.email) {
-		throw new Error('Username, password and email are required')
+	if (!user.username || !user.password || !user.email || !user.imageUrl) {
+		throw new Error('Username, password, email, and imageUrl are required')
+	}
+	if (!isValidEmail(user.email)) {
+		throw new Error('Invalid email format')
 	}
 	const userExists = await findByEmail(user.email)
 	if (userExists) {
 		throw new Error('User already exists')
-	}
-	if (!isValidEmail(user.email)) {
-		throw new Error('Invalid email format')
 	}
 	const hashedPassword = await hashPassword(user.password)
 	const { id, username, email } = await create({

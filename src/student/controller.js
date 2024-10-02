@@ -104,13 +104,15 @@ export const update = async (req, res) => {
 				.json({ error: error.details[0].message })
 		}
 
-		const updatedStudent = await updateStudent(value)
+		const student = await getStudentById(value.id)
 
-		if (!updatedStudent) {
+		if (!student) {
 			return res
 				.status(HttpStatusCode.NOT_FOUND.code)
 				.json({ error: HttpStatusCode.NOT_FOUND.message })
 		}
+
+		const updatedStudent = await updateStudent(value)
 
 		res.json(updatedStudent)
 	} catch (err) {
