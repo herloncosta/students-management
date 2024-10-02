@@ -2,7 +2,7 @@
 @apiurl = http://localhost:3000/api/users
 
 ### CADASTRAR UM NOVO USUÁRIO
-POST {{apiurl}}
+POST {{apiurl}}/auth/signin
 Content-Type: application/json
 
 {

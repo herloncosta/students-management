@@ -13,7 +13,6 @@ export const create = async (req, res) => {
 	if (!req.file) {
 		return res.status(400).json({ message: 'No image uploaded' })
 	}
-
 	try {
 		const newImageUrl = await createImageUpload(req.user.id, req.file.path)
 		return res.status(200).json({

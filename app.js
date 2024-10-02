@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express from 'express'
+import multer from 'multer'
 
 import { imagesRouter } from './src/images/route.js'
 import { studentRoutes } from './src/student/routes.js'
