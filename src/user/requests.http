@@ -2,7 +2,7 @@
 @apiurl = http://localhost:3000/api/users
 
 ### CADASTRAR UM NOVO USUÁRIO
-POST {{apiurl}}/auth/signin
+POST {{apiurl}}/auth/signup
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzYjI4OTU5LTFjYjktNDcyOS04OWYzLTUzYmNkYjY0MzhlZCIsInVzZXJuYW1lIjoiRGllZ28gU2FudG9zIiwiZW1haWwiOiJkaWVnb3NhbnRvc0BlbWFpbC5jb20iLCJpYXQiOjE3Mjc2NjA0NDksImV4cCI6MTcyNzY2NDA0OX0.plJFzdNKtO0JCiE9RwLpzSn5yueNpSjw1TAlslonYEI
 
 ### LOGIN
-POST {{apiurl}}/auth/login
+POST {{apiurl}}/auth/signin
 Content-Type: application/json
 
 {
