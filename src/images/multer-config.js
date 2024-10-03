@@ -1,4 +1,3 @@
-import { join } from 'node:path'
 import multer from 'multer'
 /**
  * Configures the Multer storage settings for uploading files to the server.
@@ -37,7 +36,7 @@ const fileFilter = (req, file, cb) => {
 	}
 
 	return cb(
-		new Error('Invalid file type, only JPEG and PNG is allowed!'),
+		new Error('Invalid file type, only JPEG, JPG and PNG is allowed!'),
 		false,
 	)
 }

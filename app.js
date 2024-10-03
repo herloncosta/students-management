@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express from 'express'
+import { rateLimit } from 'express-rate-limit'
 import multer from 'multer'
 
 import { imagesRouter } from './src/images/route.js'
@@ -8,8 +9,21 @@ import { userRoutes } from './src/user/routes.js'
 
 const app = express()
 
+/**
+ * Configures a rate limiter middleware for the Express application.
+ * This middleware limits the number of requests that can be made from a single IP address within a 15-minute window to 100 requests.
+ * The rate limit information is returned in the `RateLimit-*` headers, and the `X-RateLimit-*` headers are disabled.
+ */
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: true,
+	legacyHeaders: false,
+})
+
 app.use(express.json())
 app.use(cors())
+app.use(limiter)
 
 app.use('/api/students', studentRoutes)
 app.use('/api/users', userRoutes)
