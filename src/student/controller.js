@@ -1,5 +1,3 @@
-import Joi from 'joi'
-
 import { HttpStatusCode } from '../../utils/http-status-codes.js'
 import {
 	createStudent,
@@ -8,6 +6,12 @@ import {
 	getStudents,
 	updateStudent,
 } from './service.js'
+import {
+	createSchema,
+	destroySchema,
+	showSchema,
+	updateSchema,
+} from './validators.js'
 
 export const index = async (req, res) => {
 	try {
@@ -19,10 +23,6 @@ export const index = async (req, res) => {
 			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
 	}
 }
-
-const showSchema = Joi.object().keys({
-	id: Joi.string().required(),
-})
 
 export const show = async (req, res) => {
 	try {
@@ -49,13 +49,6 @@ export const show = async (req, res) => {
 	}
 }
 
-const createSchema = Joi.object().keys({
-	name: Joi.string().required(),
-	surname: Joi.string().required(),
-	email: Joi.string().email().required(),
-	age: Joi.number().integer().min(18).max(100).required(),
-})
-
 export const create = async (req, res) => {
 	try {
 		const { error, value } = createSchema.validate(req.body)
@@ -76,20 +69,11 @@ export const create = async (req, res) => {
 
 		res.json(student)
 	} catch (err) {
-		console.log(err)
 		res
 			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
 			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
 	}
 }
-
-const updateSchema = Joi.object().keys({
-	id: Joi.string().required(),
-	name: Joi.string(),
-	surname: Joi.string(),
-	email: Joi.string().email(),
-	age: Joi.number().integer().min(18).max(100),
-})
 
 export const update = async (req, res) => {
 	try {
@@ -122,10 +106,6 @@ export const update = async (req, res) => {
 			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
 	}
 }
-
-const destroySchema = Joi.object().keys({
-	id: Joi.string().required(),
-})
 
 export const destroy = async (req, res) => {
 	try {
