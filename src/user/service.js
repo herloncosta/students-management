@@ -1,12 +1,11 @@
-import { hashPassword, isValidEmail } from '../../utils/index.js'
+import { hashPassword } from '../../utils/index.js'
 import { create, findByEmail, remove, save } from './repository.js'
+import { createSchema, removeSchema, updateSchema } from './validators.js'
 
 export const createUser = async (user) => {
-	if (!user.username || !user.password || !user.email || !user.imageUrl) {
-		throw new Error('Username, password, email, and imageUrl are required')
-	}
-	if (!isValidEmail(user.email)) {
-		throw new Error('Invalid email format')
+	const { error } = createSchema.validate(user)
+	if (error) {
+		throw new Error(error.details[0].message)
 	}
 	const userExists = await findByEmail(user.email)
 	if (userExists) {
@@ -21,6 +20,10 @@ export const createUser = async (user) => {
 }
 
 export const updateUser = async (id, user) => {
+	const { error } = updateSchema.validate(user)
+	if (error) {
+		throw new Error(error.details[0].message)
+	}
 	const userExists = await findByEmail(user.email)
 	if (!userExists || !id) {
 		throw new Error('Unauthenticated user')
@@ -34,6 +37,10 @@ export const updateUser = async (id, user) => {
 }
 
 export const removeUser = async (id, email) => {
+	const { error } = removeSchema.validate({ id, email })
+	if (error) {
+		throw new Error(error.details[0].message)
+	}
 	const userExists = await findByEmail(email)
 	if (!userExists || !id) {
 		throw new Error('Unauthenticated user')
