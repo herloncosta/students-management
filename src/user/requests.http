@@ -14,24 +14,24 @@ Content-Type: application/json
 ### ATUALIZAR UM NOVO USUÁRIO
 PUT {{apiurl}}
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNiYWE5ZjQxLTg1ODEtNGNhZS1hOGFjLTEwNmEwYjUyMDljNCIsInVzZXJuYW1lIjoiRGllZ28gU2FudG9zIiwiZW1haWwiOiJkaWVnb3NhbnRvc0BlbWFpbC5jb20iLCJpYXQiOjE3Mjc2NTk5NDAsImV4cCI6MTcyNzY2MzU0MH0.u5FnrH_ryHDpsWYKnukIkwY4r2ksBnBLnEK_u9qF0fM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ5MDhkYTFlLWM2MGUtNDJmNS04MTQwLTUwZmQ0ZWY5YzA4OSIsInVzZXJuYW1lIjoiSGVybG9uIENvc3RhIiwiZW1haWwiOiJoZXJsb25jb3N0YUBlbWFpbC5jb20iLCJpYXQiOjE3MjgyMzIzOTYsImV4cCI6MTcyODIzNTk5Nn0.9t-5NNAcdI67_q5XgY0nsm0w2wxZqpntPeZdqyjRhkc
 
 {
-  "username": "Diego Costa",
-  "password": "diegosantos",
-  "email": "diegosantos@email.com"
+  "username": "Herlon Costa",
+  "password": "herlonsantos",
+  "email": "herloncosta@email.com"
 }
 
 ### REMOVER UM USUÁRIOS
 DELETE {{apiurl}}
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEzYjI4OTU5LTFjYjktNDcyOS04OWYzLTUzYmNkYjY0MzhlZCIsInVzZXJuYW1lIjoiRGllZ28gU2FudG9zIiwiZW1haWwiOiJkaWVnb3NhbnRvc0BlbWFpbC5jb20iLCJpYXQiOjE3Mjc2NjA0NDksImV4cCI6MTcyNzY2NDA0OX0.plJFzdNKtO0JCiE9RwLpzSn5yueNpSjw1TAlslonYEI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ5MDhkYTFlLWM2MGUtNDJmNS04MTQwLTUwZmQ0ZWY5YzA4OSIsInVzZXJuYW1lIjoiSGVybG9uIENvc3RhIiwiZW1haWwiOiJoZXJsb25jb3N0YUBlbWFpbC5jb20iLCJpYXQiOjE3MjgyMzIzOTYsImV4cCI6MTcyODIzNTk5Nn0.9t-5NNAcdI67_q5XgY0nsm0w2wxZqpntPeZdqyjRhkc
 
 ### LOGIN
 POST {{apiurl}}/auth/signin
 Content-Type: application/json
 
 {
-  "email": "diegosantos@email.com",
-  "password": "diegocosta"
+  "email": "herloncosta@email.com",
+  "password": "herloncosta"
 }

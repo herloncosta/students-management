@@ -1,7 +1,7 @@
 import { hashPassword, sendResponse } from '../../utils/index.js'
 import { findByEmail } from './repository.js'
 import { createUser, removeUser, updateUser } from './service.js'
-import { createSchema } from './validators.js'
+import { createSchema, removeSchema, updateSchema } from './validators.js'
 
 export const store = async (req, res) => {
 	try {
@@ -28,8 +28,25 @@ export const store = async (req, res) => {
 
 export const update = async (req, res) => {
 	try {
+		const { error, value } = updateSchema.validate(req.body)
+		if (error) {
+			return sendResponse(res, 400, error.details[0].message, null)
+		}
+
+		const userExists = await findByEmail(value.email)
+		if (!userExists) {
+			return sendResponse(res, 404, 'User not found', null)
+		}
+
+		if (value.password) {
+			const hashedPassword = await hashPassword(value.password)
+			value.password = hashedPassword
+		}
+
 		const updatedUser = await updateUser(req.user.id, req.body)
-		res.status(200).json({ updatedUser, message: 'User updated successfully' })
+		return res
+			.status(200)
+			.json({ updatedUser, message: 'User updated successfully' })
 	} catch (err) {
 		res.status(400).json({ error: err.message })
 	}
@@ -37,10 +54,27 @@ export const update = async (req, res) => {
 
 export const destroy = async (req, res) => {
 	try {
-		await removeUser(req.user.id, req.user.email)
+		const { id, email } = req.user
+		console.log(id, email)
+		const { error } = removeSchema.validate({ id, email })
+
+		if (error) {
+			return sendResponse(res, 400, error.details[0].message, null)
+		}
+
+		if (!id) {
+			return sendResponse(res, 403, 'Unauthorized', null)
+		}
+
+		const userExists = await findByEmail(email)
+		if (!userExists) {
+			return sendResponse(res, 404, 'User not found', null)
+		}
+
+		await removeUser(id)
 		req.user = null
-		res.status(204).json(null)
+		return sendResponse(res, 204, 'User removed successfuly', null)
 	} catch (err) {
-		res.status(400).json({ error: err.message })
+		sendResponse(res, 500, 'Internal server error', null)
 	}
 }
