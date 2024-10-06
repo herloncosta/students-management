@@ -1,3 +1,5 @@
+import multer from 'multer'
+
 /**
  * Middleware function to handle errors in the application.
  *

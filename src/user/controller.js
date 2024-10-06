@@ -1,17 +1,28 @@
+import { hashPassword, sendResponse } from '../../utils/index.js'
+import { findByEmail } from './repository.js'
 import { createUser, removeUser, updateUser } from './service.js'
 import { createSchema } from './validators.js'
 
 export const store = async (req, res) => {
 	try {
-		const { error } = createSchema.validate(req.body)
+		const { error, value } = createSchema.validate(req.body)
 		if (error) {
-			
-			return res.status(400).json({ error: error.details[0].message })
+			return sendResponse(res, 400, error.details[0].message, null)
 		}
-		const user = await createUser(req.body)
-		res.status(201).json({ user, message: 'User created successfully' })
+
+		const userExists = await findByEmail(value.email)
+		if (userExists) {
+			return sendResponse(res, 400, 'User already exists', null)
+		}
+
+		const hashedPassword = await hashPassword(value.password)
+		value.password = hashedPassword
+		const user = await createUser(value)
+
+		return sendResponse(res, 201, 'User created successfully', user)
 	} catch (err) {
-		res.status(500).json({ error: 'Internal server error' })
+		console.error(err)
+		sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 

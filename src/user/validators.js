@@ -4,7 +4,7 @@ export const createSchema = Joi.object({
 	username: Joi.string().required(),
 	password: Joi.string().required(),
 	email: Joi.string().email().required(),
-	imageUrl: Joi.string().required(),
+	imageUrl: Joi.string(),
 })
 
 export const updateSchema = Joi.object({

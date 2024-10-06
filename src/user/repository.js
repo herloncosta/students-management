@@ -6,16 +6,11 @@ export const findByEmail = async (email) => {
 }
 
 export const create = async (user) => {
-	return await prisma.user.create({
-		data: { ...user },
-	})
+	return await prisma.user.create({ data: { ...user } })
 }
 
 export const save = async (id, user) => {
-	return await prisma.user.update({
-		where: { id },
-		data: { ...user },
-	})
+	return await prisma.user.update({ where: { id }, data: { ...user } })
 }
 
 export const remove = async (id) => {

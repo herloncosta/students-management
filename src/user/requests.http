@@ -6,9 +6,9 @@ POST {{apiurl}}/auth/signup
 Content-Type: application/json
 
 {
-  "username": "Diego Santos",
-  "password": "diegocosta",
-  "email": "diegosantos@email.com"
+  "username": "Herlon Costa",
+  "password": "herloncosta",
+  "email": "herloncosta@email.com"
 }
 
 ### ATUALIZAR UM NOVO USUÁRIO
