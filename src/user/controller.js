@@ -1,11 +1,17 @@
 import { createUser, removeUser, updateUser } from './service.js'
+import { createSchema } from './validators.js'
 
 export const store = async (req, res) => {
 	try {
+		const { error } = createSchema.validate(req.body)
+		if (error) {
+			
+			return res.status(400).json({ error: error.details[0].message })
+		}
 		const user = await createUser(req.body)
 		res.status(201).json({ user, message: 'User created successfully' })
 	} catch (err) {
-		res.status(400).json({ error: err.message })
+		res.status(500).json({ error: 'Internal server error' })
 	}
 }
 
