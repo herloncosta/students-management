@@ -21,7 +21,6 @@ export const store = async (req, res) => {
 
 		return sendResponse(res, 201, 'User created successfully', user)
 	} catch (err) {
-		console.error(err)
 		sendResponse(res, 500, 'Internal server error', null)
 	}
 }
@@ -48,14 +47,13 @@ export const update = async (req, res) => {
 			.status(200)
 			.json({ updatedUser, message: 'User updated successfully' })
 	} catch (err) {
-		res.status(400).json({ error: err.message })
+		sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
 export const destroy = async (req, res) => {
 	try {
 		const { id, email } = req.user
-		console.log(id, email)
 		const { error } = removeSchema.validate({ id, email })
 
 		if (error) {

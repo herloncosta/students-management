@@ -1,4 +1,5 @@
-import { HttpStatusCode } from '../../utils/http-status-codes.js'
+import { sendResponse } from '../../utils/index.js'
+import { findByEmail } from './repository.js'
 import {
 	createStudent,
 	deleteStudent,
@@ -16,11 +17,9 @@ import {
 export const index = async (req, res) => {
 	try {
 		const students = await getStudents()
-		res.status(HttpStatusCode.OK.code).json(students)
+		return sendResponse(res, 200, 'Students fetched successfully', students)
 	} catch (err) {
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
-			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
@@ -28,82 +27,68 @@ export const show = async (req, res) => {
 	try {
 		const { error, value } = showSchema.validate(req.params)
 		if (error) {
-			return res
-				.status(HttpStatusCode.BAD_REQUEST.code)
-				.json({ error: error.details[0].message })
+			return sendResponse(res, 400, error.details[0].message, null)
 		}
 
 		const student = await getStudentById(value.id)
-
 		if (!student) {
-			return res
-				.status(HttpStatusCode.NOT_FOUND.code)
-				.json({ error: HttpStatusCode.NOT_FOUND.message })
+			return sendResponse(res, 404, 'Student not found', null)
 		}
 
-		res.json(student)
-	} catch (e) {
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
-			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
+		return sendResponse(res, 200, 'Student fetched successfully', student)
+	} catch (error) {
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
 export const create = async (req, res) => {
 	try {
 		const { error, value } = createSchema.validate(req.body)
-
 		if (error) {
-			return res
-				.status(HttpStatusCode.BAD_REQUEST.code)
-				.json({ error: error.details[0].message })
+			return sendResponse(res, 400, error.details[0].message, null)
+		}
+
+		const studentExists = await findByEmail(value.email)
+		if (studentExists) {
+			return sendResponse(res, 400, 'Student already exists', null)
 		}
 
 		const student = await createStudent(value)
-
-		if (!student) {
-			return res
-				.status(HttpStatusCode.BAD_REQUEST.code)
-				.json({ error: error.details[0].message })
-		}
-
-		res.json(student)
-	} catch (err) {
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
-			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
+		return sendResponse(res, 200, 'Student created successfully', student)
+	} catch (error) {
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
 export const update = async (req, res) => {
 	try {
+		const { id } = req.params
+		const { name, surname, email, age } = req.body
 		const { error, value } = updateSchema.validate({
-			...req.params,
-			...req.body,
+			id,
+			name,
+			surname,
+			email,
+			age,
 		})
-
 		if (error) {
-			return res
-				.status(HttpStatusCode.BAD_REQUEST.code)
-				.json({ error: error.details[0].message })
+			return sendResponse(res, 400, error.details[0].message, null)
 		}
 
 		const student = await getStudentById(value.id)
-
 		if (!student) {
-			return res
-				.status(HttpStatusCode.NOT_FOUND.code)
-				.json({ error: HttpStatusCode.NOT_FOUND.message })
+			return sendResponse(res, 404, 'Student not found', null)
 		}
 
 		const updatedStudent = await updateStudent(value)
-
-		res.json(updatedStudent)
+		return sendResponse(
+			res,
+			200,
+			'Student updated successfully',
+			updatedStudent,
+		)
 	} catch (err) {
-		console.log(err)
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
-			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
@@ -111,16 +96,17 @@ export const destroy = async (req, res) => {
 	try {
 		const { error, value } = destroySchema.validate(req.params)
 		if (error) {
-			return res
-				.status(HttpStatusCode.BAD_REQUEST.code)
-				.json({ error: error.details[0].message })
+			return sendResponse(res, 400, error.details[0].message, null)
+		}
+
+		const student = await getStudentById(value.id)
+		if (!student) {
+			return sendResponse(res, 404, 'Student not found', null)
 		}
 
 		await deleteStudent(value)
-		res.status(HttpStatusCode.NO_CONTENT.code).json({})
+		return sendResponse(res, 200, 'Student deleted successfully', null)
 	} catch (err) {
-		res
-			.status(HttpStatusCode.INTERNAL_SERVER_ERROR.code)
-			.json({ error: HttpStatusCode.INTERNAL_SERVER_ERROR.message })
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
