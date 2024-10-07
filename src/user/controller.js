@@ -21,7 +21,7 @@ export const store = async (req, res) => {
 
 		return sendResponse(res, 201, 'User created successfully', user)
 	} catch (err) {
-		sendResponse(res, 500, 'Internal server error', null)
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
@@ -43,11 +43,9 @@ export const update = async (req, res) => {
 		}
 
 		const updatedUser = await updateUser(req.user.id, req.body)
-		return res
-			.status(200)
-			.json({ updatedUser, message: 'User updated successfully' })
+		return sendResponse(res, 200, 'User updated successfully', updatedUser)
 	} catch (err) {
-		sendResponse(res, 500, 'Internal server error', null)
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
 
@@ -73,6 +71,6 @@ export const destroy = async (req, res) => {
 		req.user = null
 		return sendResponse(res, 204, 'User removed successfuly', null)
 	} catch (err) {
-		sendResponse(res, 500, 'Internal server error', null)
+		return sendResponse(res, 500, 'Internal server error', null)
 	}
 }
