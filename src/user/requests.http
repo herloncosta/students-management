@@ -1,5 +1,5 @@
 ### VARIÁVEIS
-@apiurl = http://localhost:3000/api/users
+@apiurl = http://localhost:4000/api/users
 
 ### CADASTRAR UM NOVO USUÁRIO
 POST {{apiurl}}/auth/signup
