@@ -1,19 +1,19 @@
 ### LISTAR TODOS OS ALUNOS
-GET http://localhost:3000/api/students
+GET http://localhost:4000/api/students
 Content-Type: application/json
 
 ### LISTAR ALUNO POR ID
-GET http://localhost:3000/api/students/b816470f-97fa-48e3-b7ce-c940c7465b26
+GET http://localhost:4000/api/students/b816470f-97fa-48e3-b7ce-c940c7465b26
 Content-Type: application/json
 
 ### CADASTRAR UM NOVO ALUNO
-POST http://localhost:3000/api/students
+POST http://localhost:4000/api/students
 Content-Type: application/json
 
 {
-  "name": "Diego",
+  "name": "Herlon",
   "surname": "Costa",
-  "email": "diegocosta@email.com",
+  "email": "herloncosta@email.com",
   "age": 30
 }
 
